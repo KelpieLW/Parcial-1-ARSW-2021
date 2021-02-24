@@ -65,6 +65,10 @@ public class Result {
     public double getTestSpecifity() {
         return testSpecifity;
     }
+
+    public ResultType getResultType(){
+        return type;
+    }
     //</editor-fold>
 
     //<editor-fold desc="setters">
@@ -102,6 +106,11 @@ public class Result {
 
     public void setTestSpecifity(double testSpecifity) {
         this.testSpecifity = testSpecifity;
+
+
+    }
+    public void setType(ResultType resultType){
+        this.type=resultType;
     }
     //</editor-fold>
 
