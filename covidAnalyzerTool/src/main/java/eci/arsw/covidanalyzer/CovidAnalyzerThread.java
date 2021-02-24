@@ -40,7 +40,7 @@ public class CovidAnalyzerThread extends Thread{
                         }
                     }
                 }
-                System.out.println(result);
+
                 resultAnalyzer.addResult(result);
             }
             amountOfFilesProcessed.incrementAndGet();
