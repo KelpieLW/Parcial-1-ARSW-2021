@@ -22,6 +22,7 @@ public class CovidAnalyzerTool {
     private TestReader testReader;
     private int amountOfFilesTotal;
     private AtomicInteger amountOfFilesProcessed;
+    private CovidAnalyzerThread[] transactionCheckThreads;
 
     public CovidAnalyzerTool() {
         resultAnalyzer = new ResultAnalyzer();
@@ -29,17 +30,30 @@ public class CovidAnalyzerTool {
         amountOfFilesProcessed = new AtomicInteger();
     }
 
-    public void processResultData() {
+    public void processResultData(int numThreads) {
         amountOfFilesProcessed.set(0);
         List<File> resultFiles = getResultFileList();
         amountOfFilesTotal = resultFiles.size();
-        for (File resultFile : resultFiles) {
-            List<Result> results = testReader.readResultsFromFile(resultFile);
-            for (Result result : results) {
-                resultAnalyzer.addResult(result);
+        int transactionsPerThread = amountOfFilesTotal/numThreads;
+        int reminderTransactions=amountOfFilesTotal%numThreads;
+        int limitCounter=0;
+        transactionCheckThreads=new CovidAnalyzerThread[numThreads];
+        for (int i = 0; i < numThreads; i++) {
+            transactionCheckThreads[i]=new CovidAnalyzerThread(limitCounter, limitCounter+transactionsPerThread,amountOfFilesProcessed, testReader,resultAnalyzer, resultFiles);
+
+
+            if (i==numThreads-1){
+                transactionCheckThreads[i]=new CovidAnalyzerThread(limitCounter, limitCounter+transactionsPerThread+reminderTransactions,amountOfFilesProcessed, testReader,resultAnalyzer, resultFiles);
             }
-            amountOfFilesProcessed.incrementAndGet();
+
+            limitCounter+=transactionsPerThread;
         }
+        for (int i = 0; i < transactionCheckThreads.length; i++) {
+
+            transactionCheckThreads[i].start();
+        }
+
+        //Thread threads=new CovidAnalyzerThread(0,0, amountOfFilesProcessed, testReader,resultAnalyzer, resultFiles);
     }
 
     private List<File> getResultFileList() {
@@ -62,13 +76,15 @@ public class CovidAnalyzerTool {
      */
     public static void main(String... args) throws Exception {
         CovidAnalyzerTool covidAnalyzerTool = new CovidAnalyzerTool();
-        Thread processingThread = new Thread(() -> covidAnalyzerTool.processResultData());
-        processingThread.start();
+        //Thread processingThread = new Thread(() -> covidAnalyzerTool.processResultData());
+        //processingThread.start();
+        covidAnalyzerTool.processResultData(5);
         while (true) {
             Scanner scanner = new Scanner(System.in);
             String line = scanner.nextLine();
             if (line.contains("exit"))
                 break;
+            
             String message = "Processed %d out of %d files.\nFound %d positive people:\n%s";
             Set<Result> positivePeople = covidAnalyzerTool.getPositivePeople();
             String affectedPeople = positivePeople.stream().map(Result::toString).reduce("", (s1, s2) -> s1 + "\n" + s2);
