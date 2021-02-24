@@ -104,7 +104,14 @@ public class CovidAggregateController {
 
 
 
+///////BONO
+    @RequestMapping(value = "/covid/result/{date}", method = RequestMethod.GET)
+    public ArrayList<Result> getByDate(@PathVariable String date) {
 
+        return covidAggregateService.getResultByDate(date);
+
+
+    }
 
 
 

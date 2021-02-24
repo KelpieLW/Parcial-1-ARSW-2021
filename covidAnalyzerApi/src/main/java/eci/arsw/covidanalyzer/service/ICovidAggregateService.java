@@ -38,6 +38,11 @@ public interface ICovidAggregateService {
      */
     ArrayList<Result> getAllResults();
 
+    /**
+     * Return all by gate
+     */
+
+    ArrayList<Result> getResultByDate(String date);
 
 
 }

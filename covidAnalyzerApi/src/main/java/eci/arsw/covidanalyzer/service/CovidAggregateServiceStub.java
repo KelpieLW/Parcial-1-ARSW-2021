@@ -55,4 +55,16 @@ public class CovidAggregateServiceStub implements ICovidAggregateService{
     public ArrayList<Result> getAllResults(){
         return listOfResults;
     }
+
+
+    public ArrayList<Result> getResultByDate(String date) {
+        ArrayList<Result>listOfResultsOfSomeType=new ArrayList<Result>();
+        for(int i = 0; i < listOfResults.size(); i++){
+            if(listOfResults.get(i).getTestDate().equals(date)){
+                listOfResultsOfSomeType.add(listOfResults.get(i));
+            }
+        }
+        return listOfResultsOfSomeType;
+
+    }
 }
