@@ -21,6 +21,7 @@ public class CovidAnalyzerThread extends Thread{
         this.testReader=testReader;
         this.resultAnalyzer=resultAnalyzer;
         this.resultFiles=resultFiles;
+        this.paused=new AtomicBoolean(false);
 
 
     }
@@ -39,6 +40,7 @@ public class CovidAnalyzerThread extends Thread{
                         }
                     }
                 }
+                System.out.println(result);
                 resultAnalyzer.addResult(result);
             }
             amountOfFilesProcessed.incrementAndGet();
@@ -47,7 +49,7 @@ public class CovidAnalyzerThread extends Thread{
 
     public synchronized void wakeUpSleep() {
         if(paused.get()) {
-            notify();
+            this.notify();
         }
         paused.getAndSet(!paused.get());
 

@@ -84,8 +84,14 @@ public class CovidAnalyzerTool {
             String line = scanner.nextLine();
             if (line.contains("exit"))
                 break;
-            
+            if (line.isEmpty()){
+                for (CovidAnalyzerThread threadInList: covidAnalyzerTool.transactionCheckThreads) {
+                    threadInList.wakeUpSleep();
+                }
+            }
+
             String message = "Processed %d out of %d files.\nFound %d positive people:\n%s";
+
             Set<Result> positivePeople = covidAnalyzerTool.getPositivePeople();
             String affectedPeople = positivePeople.stream().map(Result::toString).reduce("", (s1, s2) -> s1 + "\n" + s2);
             message = String.format(message, covidAnalyzerTool.amountOfFilesProcessed.get(), covidAnalyzerTool.amountOfFilesTotal, positivePeople.size(), affectedPeople);
