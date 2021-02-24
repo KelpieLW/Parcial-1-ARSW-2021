@@ -16,6 +16,10 @@ public class Result {
     private boolean result;
     private double testSpecifity;
     //</editor-fold>
+    public Result(){
+
+    }
+
     public Result(UUID id, String firstName, String lastName, String gender, String email, String birthString, ResultType type, String testString, boolean result, double testSpecifity){
         this.id=id;
         this.firstName=firstName;

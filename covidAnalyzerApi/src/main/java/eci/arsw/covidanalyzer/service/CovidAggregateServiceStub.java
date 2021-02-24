@@ -19,8 +19,21 @@ public class CovidAggregateServiceStub implements ICovidAggregateService{
     }
     @Override
     public boolean aggregateResult(Result result, ResultType type) {
+        boolean flagRepeatedEntry=false;
+        for (int i = 0; i < listOfResults.size(); i++) {
+            if(listOfResults.get(i).getId().equals(result.getId())){
+                flagRepeatedEntry=true;
+            }
+        }
+        if (!flagRepeatedEntry){
+            result.setType(type);
+            listOfResults.add(result);
 
-        return false;
+        }
+        if (flagRepeatedEntry){
+
+        }
+        return !flagRepeatedEntry;
     }
 
     @Override

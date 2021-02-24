@@ -26,7 +26,7 @@ public interface ICovidAggregateService {
     ArrayList<Result> getResult(ResultType type);
 
     /**
-     *
+     * Gets an specific id and updates it, if this id doesn't exist the method creates it instead
      * @param id
      * @param type
      */
