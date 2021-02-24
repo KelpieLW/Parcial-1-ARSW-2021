@@ -15,6 +15,7 @@ public class Result {
     private String testString;
     private boolean result;
     private double testSpecifity;
+    private int numberOfTestsMade;
     //</editor-fold>
     public Result(){
 
@@ -31,6 +32,7 @@ public class Result {
         this.testString=testString;
         this.result=result;
         this.testSpecifity=testSpecifity;
+        this.numberOfTestsMade=0;
 
     }
     //<editor-fold desc="getters">
@@ -112,6 +114,13 @@ public class Result {
         this.testSpecifity = testSpecifity;
 
 
+    }
+
+    public void increment(){
+        numberOfTestsMade+=1;
+    }
+    public int getNumberOfTestsMade(){
+        return numberOfTestsMade;
     }
     public void setType(ResultType resultType){
         this.type=resultType;

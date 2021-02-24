@@ -48,7 +48,21 @@ public class CovidAggregateServiceStub implements ICovidAggregateService{
     }
 
     @Override
-    public void upsertPersonWithMultipleTests(UUID id, ResultType type) {
+    public boolean upsertPersonWithMultipleTests(UUID id, ResultType type) {
+        int index=-1;
+        boolean flagNotFound=false;
+        for (int i = 0; i < listOfResults.size(); i++) {
+            if(listOfResults.get(i).getId().equals(id)&&listOfResults.get(i).getResultType().equals(type)){
+                index=i;
+                flagNotFound=true;
+            }
+        }
+        if (index!=-1){
+            listOfResults.get(index).increment();
+
+        }
+        return flagNotFound;
+
 
     }
 

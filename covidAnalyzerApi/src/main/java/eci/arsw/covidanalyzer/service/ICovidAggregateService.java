@@ -30,7 +30,7 @@ public interface ICovidAggregateService {
      * @param id
      * @param type
      */
-    void upsertPersonWithMultipleTests(UUID id, ResultType type);
+    boolean upsertPersonWithMultipleTests(UUID id, ResultType type);
 
     /**
      * Get all the stored results

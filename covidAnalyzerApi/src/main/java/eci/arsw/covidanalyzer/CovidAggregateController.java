@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @RestController
 public class CovidAggregateController {
@@ -118,11 +119,19 @@ public class CovidAggregateController {
     //TODO: Implemente el método.
 
     @RequestMapping(value = "/covid/result/persona/{id}", method = RequestMethod.PUT)
-    public ResponseEntity savePersonaWithMultipleTests() {
+    public ResponseEntity savePersonaWithMultipleTests(@PathVariable UUID id, @RequestBody ResultType type) {
         //TODO
-        covidAggregateService.getResult(ResultType.TRUE_POSITIVE);
-        return null;
+        boolean flag;
+        flag=covidAggregateService.upsertPersonWithMultipleTests(id,type);
+        if(flag){
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
+
+
     @GetMapping(value="/covid/all")
     public ArrayList<Result> getAllResults(){
         return covidAggregateService.getAllResults();
